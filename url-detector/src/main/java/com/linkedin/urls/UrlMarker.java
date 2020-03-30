@@ -12,6 +12,7 @@ package com.linkedin.urls;
 public class UrlMarker {
 
   private String _originalUrl;
+  private int _absoluteIndex = -1;
   private int _schemeIndex = -1;
   private int _usernamePasswordIndex = -1;
   private int _hostIndex = -1;
@@ -33,6 +34,14 @@ public class UrlMarker {
 
   public String getOriginalUrl() {
     return _originalUrl;
+  }
+
+  public int getAbsoluteIndex() {
+    return _absoluteIndex;
+  }
+
+  public void setAbsoluteIndex(int absoluteIndex) {
+    this._absoluteIndex = absoluteIndex;
   }
 
   public void setIndex(UrlPart urlPart, int index) {

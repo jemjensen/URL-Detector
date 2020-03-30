@@ -92,6 +92,10 @@ public class Url {
     return getFullUrlWithoutFragment() + StringUtils.defaultString(getFragment());
   }
 
+  public int getAbsoluteIndex() {
+    return _urlMarker.getAbsoluteIndex();
+  }
+
   /**
    *
    * @return Formats the url to: [scheme]://[username]:[password]@[host]:[port]/[path]?[query]
