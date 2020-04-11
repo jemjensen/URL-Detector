@@ -278,18 +278,13 @@ public class UrlDetector {
    * @return new index of where the domain starts
    */
   private int processColon(int length) {
+    //assuming last char of _buffer is ':'
     if (_hasScheme) {
       //read it as username/password if it has scheme
       if (!readUserPass(length)) {
         //unread the ":" so that the domain reader can process it
         _reader.goBack();
-        
-        // Check buffer length before clearing it; set length to 0 if buffer is empty
-        if (_buffer.length() > 0) {
-          _buffer.delete(_buffer.length() - 1, _buffer.length());
-        } else {
-          length = 0;
-        }
+        _buffer.delete(_buffer.length() - 1, _buffer.length());
 
         int backtrackOnFail = _reader.getPosition() - _buffer.length() + length;
         if (!readDomainName(_buffer.substring(length))) {
@@ -301,11 +296,11 @@ public class UrlDetector {
       } else {
     	length = 0;
       }
-    } else if (readScheme() && _buffer.length() > 0) {
+    } else if (readScheme() && _buffer.length() > 1) {
       _hasScheme = true;
       length = _buffer.length(); //set length to be right after the scheme
-    } else if (_buffer.length() > 0 && _options.hasFlag(UrlDetectorOptions.ALLOW_SINGLE_LEVEL_DOMAIN)
-        && _reader.canReadChars(1)) { //takes care of case like hi:
+    } else if (_buffer.length() > 1 && _options.hasFlag(UrlDetectorOptions.ALLOW_SINGLE_LEVEL_DOMAIN)
+      && _reader.canReadChars(1)) { //takes care of case like hi:
       _reader.goBack(); //unread the ":" so readDomainName can take care of the port
       _buffer.delete(_buffer.length() - 1, _buffer.length());
       if (!readDomainName(_buffer.toString())) {
