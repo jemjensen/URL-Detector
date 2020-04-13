@@ -363,6 +363,7 @@ public class TestUriDetection {
     runTest("/", UrlDetectorOptions.ALLOW_SINGLE_LEVEL_DOMAIN);
     runTest("////", UrlDetectorOptions.ALLOW_SINGLE_LEVEL_DOMAIN);
     runTest("hi:", UrlDetectorOptions.ALLOW_SINGLE_LEVEL_DOMAIN);
+    runTest("https://[fe30:4:3:0:192.3.2.1]/", UrlDetectorOptions.ALLOW_SINGLE_LEVEL_DOMAIN,"fe30:4","192.3.2.1");
     runTest("http://localhost", UrlDetectorOptions.Default);
     runTest("localhost:9000/lalala", UrlDetectorOptions.Default);
   }
@@ -463,6 +464,7 @@ public class TestUriDetection {
     runTest("[fe80:aaaa:aaaa:aaaa:[::]3dd0:7f8e:57b7:34d5f]", UrlDetectorOptions.Default, "[::]");
     runTest("[b[::7f8e]:55]akjef[::]", UrlDetectorOptions.Default, "[::7f8e]:55", "[::]");
     runTest("[bcad::kkkk:aaaa:3dd0[::7f8e]:57b7:34d5]akjef[::]", UrlDetectorOptions.Default, "[::7f8e]:57", "[::]");
+    runTest("https://[fe30:4:3:0:192.3.2.1]/", UrlDetectorOptions.Default, "192.3.2.1");
   }
 
   @Test
