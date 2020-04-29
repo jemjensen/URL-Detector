@@ -76,4 +76,18 @@ public class TestHostNormalizer {
     Assert.assertEquals(hostNormalizer.getNormalizedHost(), host.toLowerCase());
     Assert.assertNull(hostNormalizer.getBytes());
   }
+
+  @DataProvider
+  private Object[][] getUnNormalHosts() {
+    return new Object[][] {
+      {"🐩🤠🖊🍩🏳🐯🕶🐋.🍕💩.ws", "xn--gj8huimcrf6a45n5dx91a.xn--vi8hiv.ws"},
+      {"goȪgle.ga", "xn--gogle-jdc.ga"}
+    };
+  }
+
+  @Test(dataProvider = "getUnNormalHosts")
+  public void testHostnameNormalization(String unNormalizedHost, String expectedNormalizedHost) {
+    HostNormalizer hostNormalizer = new HostNormalizer(unNormalizedHost);
+    Assert.assertEquals(hostNormalizer.getNormalizedHost(), expectedNormalizedHost);
+  }
 }
