@@ -80,6 +80,7 @@ public class TestHostNormalizer {
   @DataProvider
   private Object[][] getUnNormalHosts() {
     return new Object[][] {
+      {"☀♁♧.com", "xn--k3h6hoe.com"},
       {"🐩🤠🖊🍩🏳🐯🕶🐋.🍕💩.ws", "xn--gj8huimcrf6a45n5dx91a.xn--vi8hiv.ws"},
       {"goȪgle.ga", "xn--gogle-jdc.ga"}
     };
