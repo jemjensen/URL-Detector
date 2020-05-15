@@ -85,7 +85,10 @@ public class TestNormalizedUrl {
         {"http://go.co/a/b/../c", "http://go.co/a/c"},
         {"http://big.big.boss@0xb02067cd/", "http://big.big.boss@176.32.103.205/"},
         {"http://www.0xb02067cd/", "http://www.0xb02067cd/"},
-        {"http://012.0xb02067cd/", "http://012.0xb02067cd/"}
+        {"http://012.0xb02067cd/", "http://012.0xb02067cd/"},
+        {"http://☀♁♧.com", "http://xn--k3h6hoe.com/"},
+        {"http://💄💃💏.ga", "http://xn--ir8hb8a.ga/"},
+        {"http://goȪgle.ga", "http://xn--gogle-jdc.ga/"}
     };
   }
 

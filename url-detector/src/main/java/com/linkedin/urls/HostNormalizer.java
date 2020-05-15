@@ -51,7 +51,7 @@ public class HostNormalizer {
     String host;
     try {
       //replace high unicode characters
-      host = IDN.toASCII(_host);
+      host = IDN.toASCII(_host, IDN.ALLOW_UNASSIGNED);
     } catch (IllegalArgumentException ex) {
       //occurs when the url is invalid. Just return
       return;
