@@ -106,9 +106,15 @@ public class UrlDetector {
    */
   public enum ReadEndState {
     /**
-     * The current url is valid.
+     * The current url is valid and is positioned exactly at the end of buffer
      */
     ValidUrl,
+
+    /**
+     * The current url is valid and is positioned one character behind the end of buffer
+     */
+    OffsetValidUrl,
+
     /**
      * The current url is invalid.
      */
@@ -566,6 +572,8 @@ public class UrlDetector {
     switch (state) {
       case ValidDomainName:
         return readEnd(ReadEndState.ValidUrl);
+      case OffsetValidDomainName:
+        return readEnd(ReadEndState.OffsetValidUrl);
       case ReadFragment:
         return readFragment();
       case ReadPath:
@@ -595,7 +603,7 @@ public class UrlDetector {
 
       //if it's the end or space, then a valid url was read.
       if (curr == ' ' || checkMatchingCharacter(curr) != CharacterMatch.CharacterNotMatched) {
-        return readEnd(ReadEndState.ValidUrl);
+        return readEnd(ReadEndState.OffsetValidUrl);
       } else {
         //otherwise keep appending.
         _buffer.append(curr);
@@ -621,7 +629,7 @@ public class UrlDetector {
         return readFragment();
       } else if (curr == ' ' || checkMatchingCharacter(curr) != CharacterMatch.CharacterNotMatched) {
         //end of query string
-        return readEnd(ReadEndState.ValidUrl);
+        return readEnd(ReadEndState.OffsetValidUrl);
       } else { //all else add to buffer.
         _buffer.append(curr);
       }
@@ -665,7 +673,7 @@ public class UrlDetector {
           _buffer.delete(_buffer.length() - 1, _buffer.length());
         }
         _currentUrlMarker.unsetIndex(UrlPart.PORT);
-        return readEnd(ReadEndState.ValidUrl);
+        return readEnd(portLen == 1 ? ReadEndState.OffsetValidUrl : ReadEndState.ValidUrl);
       } else {
         //this is a valid character in the port string.
         _buffer.append(curr);
@@ -688,7 +696,7 @@ public class UrlDetector {
 
       if (curr == ' ' || checkMatchingCharacter(curr) != CharacterMatch.CharacterNotMatched) {
         //if end of state and we got here, then the url is valid.
-        return readEnd(ReadEndState.ValidUrl);
+        return readEnd(ReadEndState.OffsetValidUrl);
       }
 
       //append the char
@@ -715,7 +723,7 @@ public class UrlDetector {
    */
   private boolean readEnd(ReadEndState state) {
     //if the url is valid and greater then 0
-    if (state == ReadEndState.ValidUrl && _buffer.length() > 0) {
+    if (state != ReadEndState.InvalidUrl && _buffer.length() > 0) {
       //get the last character. if its a quote, cut it off.
       int len = _buffer.length();
       if (_quoteStart && _buffer.charAt(len - 1) == '\"') {
@@ -724,6 +732,10 @@ public class UrlDetector {
 
       //Add the url to the list of good urls.
       if (_buffer.length() > 0) {
+        int position = Math.max(_reader.getPosition(), 0);
+        if (state == ReadEndState.OffsetValidUrl) position--;
+
+        _currentUrlMarker.setAbsoluteIndex(Math.max(0, position - len));
         _currentUrlMarker.setOriginalUrl(_buffer.toString());
         _urlList.add(_currentUrlMarker.createUrl());
       }

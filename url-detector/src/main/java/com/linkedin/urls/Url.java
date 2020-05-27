@@ -93,6 +93,16 @@ public class Url {
   }
 
   /**
+   * Get the position of URL in the original string. You can then retrieve URL by substring'ing original
+   * text. This can be useful for obtaining context where URL appeared.
+   *
+   * @return Index of the first character of URL in original string.
+   */
+  public int getAbsoluteIndex() {
+    return _urlMarker.getAbsoluteIndex();
+  }
+
+  /**
    *
    * @return Formats the url to: [scheme]://[username]:[password]@[host]:[port]/[path]?[query]
    */
