@@ -88,10 +88,6 @@ public class DomainNameReader {
      */
     ValidDomainName,
     /**
-     * The domain name is found to be valid, but is positioned one step behind of current position.
-     */
-    OffsetValidDomainName,
-    /**
      * Finished reading, next step should be to read the fragment.
      */
     ReadFragment,
@@ -324,7 +320,6 @@ public class DomainNameReader {
 
     //while not done and not end of string keep reading.
     boolean done = false;
-    boolean lastValid = false;
 
     //If this is the first domain part, check if it's ip address in is hexa
     //similar to what is done on 'readCurrent' method
@@ -416,8 +411,8 @@ public class DomainNameReader {
         //Valid domain name character. Either a-z, A-Z, 0-9, -, or international character
         if (_seenCompleteBracketSet) {
           //covers case of [fe80::]www.google.com
+          _reader.goBack();
           done = true;
-          lastValid = true;
         } else {
           if (isAllHexSoFar && !CharUtils.isHex(curr)) {
             _numeric = false;
@@ -437,8 +432,8 @@ public class DomainNameReader {
         _numeric = false;
         _buffer.append(curr);
       } else if (curr == '[' && _seenCompleteBracketSet) { //Case where [::][ ...
+        _reader.goBack();
         done = true;
-        lastValid = true;
       } else if (curr == '%' && _reader.canReadChars(2) && CharUtils.isHex(_reader.peekChar(0))
           && CharUtils.isHex(_reader.peekChar(1))) {
         //append to the states.
@@ -456,16 +451,8 @@ public class DomainNameReader {
       }
     }
 
-    if (lastValid) {
-      _reader.goBack();
-    }
-
     //Check the domain name to make sure its ok.
-    ReaderNextState nextState = done && !lastValid
-      ? ReaderNextState.OffsetValidDomainName
-      : ReaderNextState.ValidDomainName;
-
-    return checkDomainNameValid(nextState, null);
+    return checkDomainNameValid(ReaderNextState.ValidDomainName, null);
   }
 
   /**
