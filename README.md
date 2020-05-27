@@ -74,7 +74,7 @@ To use the latest release, add the following dependency to your pom.xml:
     <dependency>
         <groupId>io.github.url-detector</groupId>
         <artifactId>url-detector</artifactId>
-        <version>0.1.23-SNAPSHOT</version>
+        <version>1.0.0-SNAPSHOT</version>
     </dependency>
 ```
 
