@@ -738,11 +738,6 @@ public class TestUriDetection {
     String[] foundArray = new String[found.size()];
     for (int i = 0; i < foundArray.length; i++) {
       foundArray[i] = found.get(i).getOriginalUrl();
-
-      // Test that positions gets annotated correctly: we can retrieve same URL by substring() from the input:
-      int absIndex = found.get(i).getAbsoluteIndex();
-      String urlSubstr = text.substring(absIndex, absIndex + foundArray[i].length());
-      Assert.assertEquals(urlSubstr, foundArray[i], "Substring URL does not match: indexing is broken");
     }
 
     Assert.assertEqualsNoOrder(foundArray, expected);
