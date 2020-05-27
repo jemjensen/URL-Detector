@@ -1,3 +1,14 @@
+v1.0.0
+------
+
+* Fixed: https://github.com/linkedin/URL-Detector/pull/31
+* Fixed: https://github.com/URL-Detector/URL-Detector/issues/10
+
+v0.1.23
+-------
+
+* Fixed: https://github.com/URL-Detector/URL-Detector/issues/6
+
 v0.1.22
 -------
 
