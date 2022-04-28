@@ -63,6 +63,11 @@ public enum UrlDetectorOptions {
   ALLOW_COLON_WITHOUT_SLASHES(29),
 
   /**
+   * Checks for URLs against the full IANA scheme list for maximum possible detections
+   */
+  EXTENDED_IANA_DETECTION(31),
+
+  /**
    * Checks for single level domains as well. Ex: go/, http://localhost
    */
   ALLOW_SINGLE_LEVEL_DOMAIN(32); //00100000

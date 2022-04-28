@@ -33,6 +33,26 @@ public class TestUriDetection {
   }
 
   @Test
+  public void testExtendedIANAFailure()
+  {
+    UrlDetector parser = new UrlDetector("telnet://example.com", UrlDetectorOptions.Default);
+    List<Url> found = parser.detect();
+    for (int i = 0; i < found.size(); i++) {
+      Assert.assertEquals(found.get(i).getScheme(),"http"); // Should still find the link but will assume it's HTTP under default options
+    }
+  }
+
+  @Test
+  public void testExtendedIANASuccess()
+  {
+    UrlDetector parser = new UrlDetector("telnet://example.com", UrlDetectorOptions.EXTENDED_IANA_DETECTION);
+    List<Url> found = parser.detect();
+    for (int i = 0; i < found.size(); i++) {
+      Assert.assertEquals(found.get(i).getScheme(),"telnet"); // Should find the link and set the scheme to the correct "telnet" value
+    }
+  }
+
+  @Test
   public void testEmailAndNormalUrl() {
     runTest("my email is vshlosbe@linkedin.com and my site is http://www.linkedin.com/vshlos",
         UrlDetectorOptions.Default, "vshlosbe@linkedin.com", "http://www.linkedin.com/vshlos");
