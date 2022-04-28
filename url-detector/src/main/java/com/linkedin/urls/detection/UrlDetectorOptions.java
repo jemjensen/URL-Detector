@@ -58,11 +58,6 @@ public enum UrlDetectorOptions {
   HTML(27), //00011011
 
   /**
-   * Checks for URLs without slashes as well. Ex: http:example.com
-   */
-  ALLOW_COLON_WITHOUT_SLASHES(29),
-
-  /**
    * Checks for URLs against the full IANA scheme list for maximum possible detections
    */
   EXTENDED_IANA_DETECTION(31),
@@ -70,7 +65,12 @@ public enum UrlDetectorOptions {
   /**
    * Checks for single level domains as well. Ex: go/, http://localhost
    */
-  ALLOW_SINGLE_LEVEL_DOMAIN(32); //00100000
+  ALLOW_SINGLE_LEVEL_DOMAIN(32), //00100000
+
+  /**
+   * Checks for URLs without slashes as well. Ex: http:example.com
+   */
+  ALLOW_COLON_WITHOUT_SLASHES(119);
 
   /**
    * The numeric value.
