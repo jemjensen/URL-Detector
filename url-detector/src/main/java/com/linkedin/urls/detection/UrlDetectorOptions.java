@@ -65,7 +65,7 @@ public enum UrlDetectorOptions {
   /**
    * Checks for URLs without slashes as well. Ex: http:example.com
    */
-  ALLOW_COLON_WITHOUT_SLASHES(119);
+  ALLOW_COLON_WITHOUT_SLASHES(64);
 
   /**
    * The numeric value.
